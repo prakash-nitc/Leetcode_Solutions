@@ -1,5 +1,5 @@
 class Solution {
-    public void generate(String digits, int idx, StringBuilder current, List<String> result)
+    public void generate(String digits, int idx, StringBuilder current, List<String> result, Map<Character, String> map)
     {
         //1.Base Case
         if(idx== digits.length())
@@ -8,25 +8,15 @@ class Solution {
             return;
         }
         // 2. Find choices for current digit
-        String letters= "";
-        switch(digits.charAt(idx))
-        {
-            case '2': letters = "abc"; break;
-            case '3': letters = "def"; break;
-            case '4': letters = "ghi"; break;
-            case '5': letters = "jkl"; break;
-            case '6': letters = "mno"; break;
-            case '7': letters = "pqrs"; break;
-            case '8': letters = "tuv"; break;
-            case '9': letters = "wxyz"; break;
-        }
+        String letters= map.get(digits.charAt(idx));
+        
         // 3. Try every choice
         for(int i=0; i< letters.length(); i++)
         {
             // MAKE
             current.append(letters.charAt(i));
             // RECURSE
-            generate(digits, idx + 1, current, result);
+            generate(digits, idx + 1, current, result, map);
             // UNDO / BACKTRACK
             current.deleteCharAt(current.length()-1);
         }
@@ -35,11 +25,21 @@ class Solution {
         int idx=0;
         StringBuilder current= new StringBuilder();
         List<String> result= new ArrayList<>();
+        Map<Character, String> map = new HashMap<>();
+
+        map.put('2', "abc");
+        map.put('3', "def");
+        map.put('4', "ghi");
+        map.put('5', "jkl");
+        map.put('6', "mno");
+        map.put('7', "pqrs");
+        map.put('8', "tuv");
+        map.put('9', "wxyz");
 
         if(digits.length()==0)
         return result;
 
-        generate(digits, idx, current, result);
+        generate(digits, idx, current, result, map);
         return result;
     }
 }
