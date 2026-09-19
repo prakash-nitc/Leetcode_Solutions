@@ -1,39 +1,35 @@
 class Solution {
     public int countStudents(int[] students, int[] sandwiches) {
-        Queue<Integer> queue= new LinkedList<>();
-        Stack<Integer> stack= new Stack<>();
+        int count_students0= 0;
+        int count_students1= 0;
 
-        //populate students
-        for(int i=0; i< students.length; i++)
+        for(int i=0; i<students.length; i++)
         {
-            queue.add(students[i]);
+            if(students[i]==0)
+                count_students0++;
+            else
+                count_students1++;
         }
-        //populate stack in reverse from R->L as we need 1st ele as top
-        for(int i= sandwiches.length-1; i>=0; i--)
+        for(int i=0; i<sandwiches.length; i++)
         {
-            stack.push(sandwiches[i]);
-        }
-
-        int rejected=0;
-        while(queue.size()!= rejected)
-        {
-            int student= queue.peek();
-            int sandwich= stack.peek();
-
-            if(student== sandwich)
+            //The sandwich can be either 0 or 1
+            if(sandwiches[i]==0 )
             {
-                queue.poll();
-                stack.pop();
-                rejected=0;
+                if(count_students0>0)
+                    count_students0--;
+                else
+                    break;
             }
             else
             {
-                queue.poll();
-                queue.add(student);
-                rejected++;
+                if (count_students1>0)
+                    count_students1--;
+                else
+                    break;
             }
-        }
-        return queue.size();
 
+        }
+        int result= count_students0 + count_students1;
+        return result;
     }
 }
