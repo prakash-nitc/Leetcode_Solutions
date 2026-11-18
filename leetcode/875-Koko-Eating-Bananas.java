@@ -1,40 +1,39 @@
 class Solution {
 
-    public long TimeTakenByKoko(int[] piles, int guess)
+    public long hours(int nums[],long speed)
     {
-        long hours=0;
-        for(int i=0; i<piles.length; i++)
+        long k=0;
+        for(int i=0; i<nums.length; i++)
         {
-            hours+= piles[i]/guess;
-            if(piles[i]%guess!=0)
-                hours++;
+            k= k+ nums[i]/speed;
+            if(nums[i]%speed!=0)
+                k++;
         }
-        return hours;
+        return k;
     }
     public int minEatingSpeed(int[] piles, int h) {
-        int low=1;
-        int max=0;
-        for(int i=0; i<piles.length; i++)
+        int n= piles.length;
+        long low=1, high=0;
+        long result=-1;
+
+        for(int i=0; i<n; i++)
         {
-            if(piles[i]> max)
-            max= piles[i];
+            if(piles[i]>high)
+                high= piles[i];
         }
-        int high= max;
-        int result=-1;
-
-        while(low<= high)
+        while(low<=high)
         {
-            int guess= (low+high)/2;
-            long total_time= TimeTakenByKoko(piles, guess); 
+            long mid= (low+high)/2;
+            long hour= hours(piles,mid);
 
-            if(total_time> h)
-                low= guess+1;
+            if(hour> h)
+                low= mid+1;
             else
             {
-                result= guess;
-                high= guess-1;
+                result= mid;
+                high=mid-1;
             }
         }
-        return result;
+        return (int)result;
     }
 }
