@@ -1,48 +1,48 @@
 class Solution {
-
-    public boolean possible(int arr[], int guess, int days)
+    public int result(int weights[], int capacity)
     {
-        int sum=0, total_days=1;
-        for(int i=0; i<arr.length; i++)
+        int days=1, sum=0;
+        for(int i=0; i<weights.length; i++)
         {
-            if(sum+arr[i]<= guess)
+            
+            if(sum+weights[i]<=capacity)
             {
-                sum+= arr[i];
+                sum+= weights[i];
             }
             else
             {
-                total_days++;
-                sum= arr[i];
-            }
+                days++;
+                sum=weights[i];
+            }   
         }
-        if(total_days> days)
-            return false;
-        else
-            return true;
+        return days;
     }
     public int shipWithinDays(int[] weights, int days) {
-        int max=0, total=0;
-        for(int i=0; i< weights.length; i++)
+        int low=0;
+        int n= weights.length;
+        int sum=0,high=0;
+        int result=0;
+        for(int i=0; i<n; i++)
         {
-            max= Math.max(max, weights[i]);
-            total+= weights[i];
+            sum+= weights[i];
+            if(weights[i]> low)
+                low= weights[i];
         }
-        int low= max, high= total;
-        int result= -1;
-
+        high= sum;
         while(low<=high)
         {
-            int guess= (low+high)/2;
-            if(possible(weights, guess, days))
-            {
-                result= guess;
-                high= guess-1;
-            }
-            else
-                low= guess+1;
-        } 
-        return result;
+            int mid= (low+high)/2;
+            int totaldays= result(weights, mid);
 
-        
+            if(totaldays> days)
+                low=mid+1;
+            else
+            {
+                result= mid;
+                high= mid-1;
+            }
+
+        }
+        return result;
     }
 }
