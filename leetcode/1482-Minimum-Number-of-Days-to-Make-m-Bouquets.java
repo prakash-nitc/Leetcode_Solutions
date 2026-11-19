@@ -1,61 +1,47 @@
 class Solution {
-
-    public boolean bouquet_possible(int arr[],int guess, int m, int k)
+    public int countBouquets(int[] bloomDay, int day, int k)
     {
-        int n= arr.length;
-        int flowers=0, bouquets=0;
-        for(int i=0; i<n; i++)
+        int bouquets=0, consecutive=0;
+        for(int i=0; i<bloomDay.length; i++)
         {
-            if(arr[i]<= guess)
+            if(bloomDay[i]<= day)
             {
-                flowers++;
-                if(flowers==k)
+                consecutive++;
+                if(consecutive==k)
                 {
                     bouquets++;
-                    flowers=0;
+                    consecutive=0;
                 }
             }
             else
-                flowers=0;
+                consecutive=0;
         }
-        if(bouquets>=m)
-            return true;
-        else
-            return false;
+        return bouquets;
+        
     }
-
     public int minDays(int[] bloomDay, int m, int k) {
-        long max= Integer.MIN_VALUE;
-        long min= Integer.MAX_VALUE;
-        int n= bloomDay.length;
+        int low=1,high=-1, result=-1;
 
-        for(int i=0; i<n; i++)
+        for(int i=0; i<bloomDay.length; i++)
         {
-            if(bloomDay[i]>max)
-                max= bloomDay[i];
-            if(bloomDay[i]<min)
-                min= bloomDay[i];
+            if(bloomDay[i]>high)
+                high= bloomDay[i];
         }
-
-        long low=min, high= max;
-        long result=-1;
-
-        if(n< (long)m*k)
-            return -1;
 
         while(low<=high)
         {
-            long guess= (low+high)/2;
-            if(bouquet_possible(bloomDay,(int)guess,m,k))
-            {
-                result=guess;
-                high= guess-1;
+            int mid= (low+high)/2;
+            int totalbouquets= countBouquets(bloomDay, mid, k);
 
-            }
+            if(totalbouquets< m)
+                low= mid+1;
             else
-                low=guess+1;
-        }
-        return (int)result;
+            {
+                result= mid;
+                high= mid-1;
+            }
 
+        }
+        return result;
     }
 }
