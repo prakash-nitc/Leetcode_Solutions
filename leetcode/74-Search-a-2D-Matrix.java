@@ -1,26 +1,37 @@
 class Solution {
-
-    public boolean searchMatrix(int[][] matrix, int target)
+    public int searchRow(int[][] matrix, int target) 
     {
-        int low=0;
-        int no_of_rows= matrix.length, no_of_cols= matrix[0].length;
-        int high= no_of_rows*no_of_cols-1;
+        int low=0, high=matrix.length-1, result=-1;
+        while(low<=high)
+        {
+            int mid= (low+high)/2;
+            if(matrix[mid][0]<=target)
+            {
+                result= mid;
+                low= mid+1;
+            }
+            else
+                high= mid-1;
+        }
+        return result;
+    }
+    public boolean searchMatrix(int[][] matrix, int target) 
+    {
+        int row= searchRow(matrix, target);
+        if(row==-1)
+            return false;
+        int low=0, high= matrix[0].length-1;
 
         while(low<=high)
         {
-            int guess=(low+high)/2;
-
-            int row_number= guess/no_of_cols;
-            int col_number= guess%no_of_cols;
-
-            if(matrix[row_number][col_number]==target)
+            int mid= (low+high)/2;
+            if(matrix[row][mid]==target)
                 return true;
-            else if (matrix[row_number][col_number]<target)
-                low= guess+1;
+            else if(matrix[row][mid]<target)
+                low=mid+1;
             else
-                high=guess-1;
+                high=mid-1;
         }
         return false;
-        
     }
 }
